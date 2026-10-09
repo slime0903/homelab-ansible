@@ -1,0 +1,24 @@
+- name: Show system information
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Display operating system
+      debug:
+        msg: "This host is running {{ ansible_facts['distribution'] }}"
+
+    - name: Display hostname
+      debug:
+        msg: "Hostname: {{ ansible_facts['hostname'] }}"
+
+    - name: Display kernel
+      debug:
+        msg: "Kernel: {{ ansible_facts['kernel'] }}"
+
+    - name: Display architecture
+      debug:
+        msg: "Architecture: {{ ansible_facts['architecture'] }}"
+
+    - name: Display memory
+      debug:
+        msg: "Memory: {{ ansible_facts['memtotal_mb'] }} MB"

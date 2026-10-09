@@ -1,0 +1,20 @@
+---
+- name: Manage Ubuntu server packages
+  hosts: linux_vms
+  become: true
+  gather_facts: true
+
+  vars:
+    server_packages:
+      - htop
+      - tree
+      - curl
+      - git
+      - jq
+
+  tasks:
+    - name: Ensure required packages are installed
+      ansible.builtin.apt:
+        name: "{{ server_packages }}"
+        state: present
+        update_cache: false

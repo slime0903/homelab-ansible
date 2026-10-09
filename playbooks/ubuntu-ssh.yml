@@ -1,0 +1,26 @@
+---
+- name: Configure Ubuntu SSH service
+  hosts: linux_vms
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Ensure OpenSSH server is installed
+      ansible.builtin.apt:
+        name: openssh-server
+        state: present
+
+    - name: Ensure SSH service is enabled and running
+      ansible.builtin.systemd_service:
+        name: ssh
+        enabled: true
+        state: started
+
+    - name: Check SSH service status
+      ansible.builtin.command: systemctl is-active ssh
+      register: ssh_status
+      changed_when: false
+
+    - name: Display SSH service status
+      ansible.builtin.debug:
+        msg: "SSH service is {{ ssh_status.stdout }}"

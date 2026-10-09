@@ -1,0 +1,24 @@
+---
+- name: Gather Ubuntu server information
+  hosts: linux_vms
+  gather_facts: true
+
+  tasks:
+    - name: Display server information
+      ansible.builtin.debug:
+        msg:
+          - "Hostname: {{ ansible_facts['hostname'] }}"
+          - "OS: {{ ansible_facts['distribution'] }}"
+          - "OS Version: {{ ansible_facts['distribution_version'] }}"
+          - "Kernel: {{ ansible_facts['kernel'] }}"
+          - "Architecture: {{ ansible_facts['architecture'] }}"
+          - "Memory: {{ ansible_facts['memtotal_mb'] }} MB"
+
+    - name: Check uptime
+      ansible.builtin.command: uptime -p
+      register: server_uptime
+      changed_when: false
+
+    - name: Display uptime
+      ansible.builtin.debug:
+        msg: "{{ server_uptime.stdout }}"

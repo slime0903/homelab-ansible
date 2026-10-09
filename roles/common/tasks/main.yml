@@ -1,0 +1,6 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Ensure common utilities are installed
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present

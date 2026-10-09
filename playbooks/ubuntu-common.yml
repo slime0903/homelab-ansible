@@ -1,0 +1,7 @@
+---
+- name: Configure common Ubuntu server packages
+  hosts: linux_vms
+  become: true
+
+  roles:
+    - role: common

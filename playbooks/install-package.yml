@@ -1,0 +1,17 @@
+- name: Ensure development packages are installed
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars:
+    dev_packages:
+      - tree
+      - git
+      - jq
+      - ripgrep
+
+  tasks:
+    - name: Ensure development packages are installed
+      package:
+        name: "{{ dev_packages }}"
+        state: present
