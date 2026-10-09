@@ -1,7 +1,7 @@
 ---
-- name: Deploy Nginx with Docker Compose
+- name: Deploy custom Nginx dashboard
   hosts: linux_vms
-  gather_facts: false
+  gather_facts: true
 
   vars:
     nginx_project_dir: /home/aaliym/docker-projects/ansible-nginx
@@ -12,6 +12,21 @@
         path: "{{ nginx_project_dir }}"
         state: directory
         mode: "0755"
+
+    - name: Ensure website directory belongs to Ubuntu user
+      become: true
+      ansible.builtin.file:
+        path: "{{ nginx_project_dir }}/html"
+        state: directory
+        owner: aaliym
+        group: aaliym
+        mode: "0755"
+
+    - name: Render homelab dashboard
+      ansible.builtin.template:
+        src: ../templates/index.html.j2
+        dest: "{{ nginx_project_dir }}/html/index.html"
+        mode: "0644"
 
     - name: Copy Docker Compose configuration
       ansible.builtin.copy:

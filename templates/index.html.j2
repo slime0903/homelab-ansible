@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Homelab Dashboard</title>
+  <style>
+    body {
+      background: #111318;
+      color: #e5e7eb;
+      font-family: monospace;
+      padding: 40px;
+    }
+    h1 { color: #8b9fff; }
+    .card {
+      background: #1e222b;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 12px;
+    }
+    .status { color: #4ade80; }
+  </style>
+</head>
+<body>
+  <h1>Homelab Dashboard</h1>
+  <p>Infrastructure managed with Ansible</p>
+
+  <div class="card">
+    <h2>Server Information</h2>
+    <p>Hostname: {{ ansible_facts['hostname'] }}</p>
+    <p>Operating System: {{ ansible_facts['distribution'] }}</p>
+    <p>Architecture: {{ ansible_facts['architecture'] }}</p>
+  </div>
+
+  <div class="card">
+    <h2>Docker</h2>
+    <p class="status">Nginx deployment configured</p>
+    <p>Managed through Ansible and Docker Compose</p>
+  </div>
+</body>
+</html>
