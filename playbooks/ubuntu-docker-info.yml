@@ -1,0 +1,32 @@
+---
+- name: Inspect Docker on Ubuntu
+  hosts: linux_vms
+  gather_facts: false
+
+  tasks:
+    - name: Check Docker version
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+      failed_when: false
+
+    - name: Check Docker service status
+      ansible.builtin.command: systemctl is-active docker
+      register: docker_service
+      changed_when: false
+      failed_when: false
+
+    - name: List running Docker containers
+      ansible.builtin.command: docker ps --format "{{ '{{' }}.Names{{ '}}' }}"
+      register: docker_containers
+      changed_when: false
+      failed_when: false
+
+    - name: Display Docker information
+      ansible.builtin.debug:
+        msg:
+          - "Docker version: {{ docker_version.stdout }}"
+          - "Docker service: {{ docker_service.stdout }}"
+          - "Running containers: {{ docker_containers.stdout_lines }}"
+          - "Container command exit code: {{ docker_containers.rc }}"
+          - "Container command error: {{ docker_containers.stderr }}"

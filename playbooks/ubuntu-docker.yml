@@ -1,0 +1,7 @@
+---
+- name: Verify Ubuntu Docker environment
+  hosts: linux_vms
+  gather_facts: false
+
+  roles:
+    - docker

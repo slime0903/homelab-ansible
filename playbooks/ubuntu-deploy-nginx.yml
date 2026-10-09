@@ -1,0 +1,30 @@
+---
+- name: Deploy Nginx with Docker Compose
+  hosts: linux_vms
+  gather_facts: false
+
+  vars:
+    nginx_project_dir: /home/aaliym/docker-projects/ansible-nginx
+
+  tasks:
+    - name: Create Nginx project directory
+      ansible.builtin.file:
+        path: "{{ nginx_project_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy Docker Compose configuration
+      ansible.builtin.copy:
+        src: ../compose/nginx/compose.yml
+        dest: "{{ nginx_project_dir }}/compose.yml"
+        mode: "0644"
+
+    - name: Deploy Nginx application
+      community.docker.docker_compose_v2:
+        project_src: "{{ nginx_project_dir }}"
+        state: present
+      register: nginx_result
+
+    - name: Display deployment result
+      ansible.builtin.debug:
+        msg: "Nginx deployment changed: {{ nginx_result.changed }}"

@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: Check Docker installation
+  ansible.builtin.command: docker --version
+  register: docker_version
+  changed_when: false
+
+- name: Check Docker service
+  ansible.builtin.command: systemctl is-active docker
+  register: docker_service
+  changed_when: false
+
+- name: List running containers
+  ansible.builtin.command: docker ps --format "{{ '{{' }}.Names{{ '}}' }}"
+  register: docker_containers
+  changed_when: false
+
+- name: Display Docker health
+  ansible.builtin.debug:
+    msg:
+      - "Version: {{ docker_version.stdout }}"
+      - "Service: {{ docker_service.stdout }}"
+      - "Containers: {{ docker_containers.stdout_lines }}"
